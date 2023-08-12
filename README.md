@@ -69,5 +69,5 @@ $
 * OS: Ubuntu 20.04 LTS
 
 ### Authors
-Said Chahir
-Othmane Boubecheur
+* Said Chahir
+* Othmane Boubecheur
