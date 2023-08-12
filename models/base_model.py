@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """Defining Base Model class"""
 import models
-from models import storage
-import uuid
+from uuid import uuid4
 from datetime import datetime
 
 
