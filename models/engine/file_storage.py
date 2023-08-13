@@ -10,14 +10,14 @@ from models.place import Place
 from models.review import Review
 
 
-class FileStorage():
+class FileStorage:
     """This class manages storage in JSON format"""
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
         """Retrieves a Dictionary of Stored Models"""
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """Inserts new object into storage dictionary"""
