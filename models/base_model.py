@@ -17,13 +17,11 @@ class BaseModel:
             dic representation. 
         """
         timef = "%Y-%m-%dT%H:%M:%S.%f"
-        if len(kwargs) != 0:
+        if kwargs:
             for key, val in kwargs.items():
-                if key == '__class__':
-                    continue
-                if key == "created_at" or key == "updated_at":
+                if key in ["created_at", "updated_at"]:
                     self.__dict__[key] = datetime.strptime(val, timef)
-                else:
+                elif key != "__class__":
                     self.__dict__[key] = val
         else:
             self.id = str(uuid4())
@@ -50,8 +48,10 @@ class BaseModel:
              values of the instance.
         """
         classname = self.__class__.__name__
-        object_dict = self.__dict__.copy()
+        object_dict = dict(self.__dict__)
         object_dict["__class__"] = classname
-        object_dict["created_at"] = self.created_at.isoformat()
-        object_dict["updated_at"] = self.updated_at.isoformat()
+        if not isinstance(object_dict["created_at"], str):
+            object_dict["created_at"] = object_dict["created_at"].isoformat()
+        if not isinstance(object_dict["updated_at"], str):
+            object_dict["updated_at"] = object_dict["updated_at"].isoformat()
         return object_dict
