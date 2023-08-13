@@ -19,6 +19,8 @@ class BaseModel:
         timef = "%Y-%m-%dT%H:%M:%S.%f"
         if len(kwargs) != 0:
             for key, val in kwargs.items():
+                if key == '__class__':
+                    continue
                 if key == "created_at" or key == "updated_at":
                     self.__dict__[key] = datetime.strptime(val, timef)
                 else:
