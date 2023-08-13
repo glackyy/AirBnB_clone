@@ -17,9 +17,6 @@ class BaseModel:
             dic representation. 
         """
         timef = "%Y-%m-%dT%H:%M:%S.%f"
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
         if len(kwargs) != 0:
             for key, val in kwargs.items():
                 if key == "created_at" or key == "updated_at":
@@ -27,6 +24,9 @@ class BaseModel:
                 else:
                     self.__dict__[key] = val
         else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
             models.storage.new(self)
 
     def __str__(self):
