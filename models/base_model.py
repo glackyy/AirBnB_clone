@@ -49,7 +49,7 @@ class BaseModel:
         """
         classname = self.__class__.__name__
         object_dict = self.__dict__.copy()
-        object_dict['__class__'] = classname
-        object_dict['created_at'] = self.created_at.isoformat()
-        object_dict['updated_at'] = self.updated_at.isoformat()
+        object_dict["__class__"] = classname
+        object_dict["created_at"] = self.created_at.isoformat()
+        object_dict["updated_at"] = self.updated_at.isoformat()
         return object_dict
