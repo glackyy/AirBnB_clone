@@ -37,8 +37,8 @@ class BaseModel:
 
     def save(self):
         """Update the 'updated_at' attrib with the current datetime"""
-        models.storage.save()
         self.updated_at = datetime.today()
+        models.storage.save()
 
     def to_dict(self):
         """Convert the instance to a dic representation
