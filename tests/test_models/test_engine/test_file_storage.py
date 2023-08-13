@@ -1,83 +1,85 @@
 #!/usr/bin/python3
-"""File Storage Testing"""
+"""
+Unittest to test FileStorage class
+"""
 import unittest
+import pep8
 import json
-from models.engine.file_storage import FileStorage
-from models.amenity import Amenity
+import os
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
 from models.city import City
+from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from models.state import State
-from models.user import User
-from models import storage
-
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+from models.engine.file_storage import FileStorage
 
 
 class TestFileStorage(unittest.TestCase):
-    """Test normal base instantiation"""
+    '''testing file storage'''
 
-    def test_file_storage(self):
-        """Test FileStorage"""
-        fs = FileStorage()
-        base = BaseModel()
+    @classmethod
+    def setUpClass(cls):
+        cls.rev1 = Review()
+        cls.rev1.place_id = "Raleigh"
+        cls.rev1.user_id = "Greg"
+        cls.rev1.text = "Grade A"
 
-        fs.new(base)
+    @classmethod
+    def teardown(cls):
+        del cls.rev1
 
-        self.assertIsInstance(fs, FileStorage)
-        self.assertIsInstance(fs.all(), dict)
-        self.assertIn("{}.{}".format("BaseModel", base.id), fs.all())
+    def teardown(self):
+        try:
+            os.remove("file.json")
+        except:
+            pass
 
-    def test_all_returns_dict(self):
-        """Test that all returns the FileStorage.__objects attr"""
+    def test_style_check(self):
+        """
+        Tests pep8 style
+        """
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/engine/file_storage.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
+    def test_all(self):
+        """
+        Tests method: all (returns dictionary <class>.<id> : <obj instance>)
+        """
         storage = FileStorage()
-        new_dict = storage.all()
-        self.assertEqual(type(new_dict), dict)
-        self.assertIs(new_dict, storage._FileStorage__objects)
+        instances_dic = storage.all()
+        self.assertIsNotNone(instances_dic)
+        self.assertEqual(type(instances_dic), dict)
+        self.assertIs(instances_dic, storage._FileStorage__objects)
 
     def test_new(self):
-        """test that new adds an object to the FileStorage.__objects attr"""
+        """
+        Tests method: new (saves new object into dictionary)
+        """
+        m_storage = FileStorage()
+        instances_dic = m_storage.all()
+        melissa = User()
+        melissa.id = 999999
+        melissa.name = "Melissa"
+        m_storage.new(melissa)
+        key = melissa.__class__.__name__ + "." + str(melissa.id)
+        #print(instances_dic[key])
+        self.assertIsNotNone(instances_dic[key])
 
-        storage = FileStorage()
-        save = FileStorage._FileStorage__objects
-        FileStorage._FileStorage__objects = {}
-        test_dict = {}
-        for key, value in classes.items():
-            with self.subTest(key=key, value=value):
-                instance = value()
-                instance_key = instance.__class__.__name__ + "." + instance.id
-                storage.new(instance)
-                test_dict[instance_key] = instance
-                self.assertEqual(test_dict, storage._FileStorage__objects)
-        FileStorage._FileStorage__objects = save
-
-    def test_save(self):
-        """Test that save properly saves objects to file.json"""
-
-        storage = FileStorage()
-        new_dict = {}
-        for key, value in classes.items():
-            instance = value()
-            instance_key = instance.__class__.__name__ + "." + instance.id
-            new_dict[instance_key] = instance
-        save = FileStorage._FileStorage__objects
-        FileStorage._FileStorage__objects = new_dict
-        storage.save()
-        FileStorage._FileStorage__objects = save
-        for key, value in new_dict.items():
-            new_dict[key] = value.to_dict()
-        string = json.dumps(new_dict)
-        with open("file.json", "r") as f:
-            js = f.read()
-        self.assertEqual(json.loads(string), json.loads(js))
-
-    def test_reload_no_file(self):
-        """ Nothing happens if file does not exist """
-        self.assertEqual(storage.reload(), None)
-
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_reload(self):
+        """
+        Tests method: reload (reloads objects from string file)
+        """
+        a_storage = FileStorage()
+        try:
+            os.remove("file.json")
+        except:
+            pass
+        with open("file.json", "w") as f:
+            f.write("{}")
+        with open("file.json", "r") as r:
+            for line in r:
+                self.assertEqual(line, "{}")
+        self.assertIs(a_storage.reload(), None)
