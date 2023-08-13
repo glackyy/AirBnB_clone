@@ -233,8 +233,8 @@ class HBNBCommand(cmd.Cmd):
     def help_count(self):
         """ Help information for the count command """
         print("Count all objects of a class")
-        print("[Usage]: count <className> or <className>.count()\n"
+        print("[Usage]: count <className> or <className>.count()\n")
 
 
 if __name__ == '__main__':
-    HBNBCommand().cmdloop())
+    HBNBCommand().cmdloop()
