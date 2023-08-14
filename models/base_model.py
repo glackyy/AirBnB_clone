@@ -1,57 +1,51 @@
 #!/usr/bin/python3
-"""Defining Base Model class"""
+"""Defines the BaseModel class."""
 import models
 from uuid import uuid4
 from datetime import datetime
 
 
 class BaseModel:
-    """Representing Base Model of the hbnb"""
+    """Represents the BaseModel of the HBnB project."""
 
     def __init__(self, *args, **kwargs):
-        """Initializing new BaseModel
+        """Initialize a new BaseModel.
 
         Args:
-            *args: Var-length arg list (not using it)
-            **kwargs: Keyword args to recreate an instance from a
-            dic representation.
+            *args (any): Unused.
+            **kwargs (dict): Key/value pairs of attributes.
         """
         timef = "%Y-%m-%dT%H:%M:%S.%f"
-        if kwargs:
+        self.id = str(uuid4())
+        self.created_at = datetime.today()
+        self.updated_at = datetime.today()
+        if len(kwargs) != 0:
             for key, val in kwargs.items():
-                if key in ["created_at", "updated_at"]:
+                if key == "created_at" or key == "updated_at":
                     self.__dict__[key] = datetime.strptime(val, timef)
-                elif key != "__class__":
+                else:
                     self.__dict__[key] = val
         else:
-            self.id = str(uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
             models.storage.new(self)
 
-    def __str__(self):
-        """Returns a string representation of the instance"""
-
-        classname = self.__class__.__name__
-        return "[{}] ({}) {}".format(classname, self.id, self.__dict__)
-
     def save(self):
-        """Update the 'updated_at' attrib with the current datetime"""
-        self.updated_at = datetime.now()
+        """Update updated_at with the current datetime."""
+        self.updated_at = datetime.today()
         models.storage.save()
 
     def to_dict(self):
-        """Convert the instance to a dic representation
+        """Return the dictionary of the BaseModel instance.
 
-        Returns:
-            dict: A dictionnary containing the attribs and
-             values of the instance.
+        Includes the key/value pair __class__ representing
+        the class name of the object.
         """
+        rdict = self.__dict__.copy()
+        rdict["created_at"] = self.created_at.isoformat()
+        rdict["updated_at"] = self.updated_at.isoformat()
+        rdict["__class__"] = self.__class__.__name__
+        return rdict
+
+    def __str__(self):
+        """Return the print/str representation of the BaseModel instance."""
         classname = self.__class__.__name__
-        object_dict = dict(self.__dict__)
-        object_dict["__class__"] = classname
-        if not isinstance(object_dict["created_at"], str):
-            object_dict["created_at"] = object_dict["created_at"].isoformat()
-        if not isinstance(object_dict["updated_at"], str):
-            object_dict["updated_at"] = object_dict["updated_at"].isoformat()
-        return object_dict
+        return "[{}] ({}) {}".format(classname, self.id, self.__dict__)
