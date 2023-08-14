@@ -46,7 +46,7 @@ class HBNBCommand(cmd.Cmd):
         """Exit on Ctrl-D"""
         return True
 
-	def do_quit(self, sta):
+    def do_quit(self, sta):
         """Exit on quit"""
         return True
 
