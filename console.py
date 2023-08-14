@@ -43,7 +43,7 @@ class HBNBCommand(cmd.Cmd):
                  "Review": Review}
 
     def do_EOF(self, sta):
-		"""Exit on Ctrl-D"""
+        """Exit on Ctrl-D"""
         return True
 
 	def do_quit(self, sta):
