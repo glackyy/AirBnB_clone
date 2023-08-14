@@ -14,7 +14,7 @@ class BaseModel:
         Args:
             *args: Var-length arg list (not using it)
             **kwargs: Keyword args to recreate an instance from a
-            dic representation. 
+            dic representation.
         """
         timef = "%Y-%m-%dT%H:%M:%S.%f"
         if kwargs:

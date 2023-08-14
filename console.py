@@ -42,11 +42,12 @@ class HBNBCommand(cmd.Cmd):
                  "City": City, "Amenity": Amenity, "Place": Place,
                  "Review": Review}
 
-    def do_EOF(self, sta):
+    def do_EOF(self, arg):
         """Exit on Ctrl-D"""
+        print("")
         return True
 
-    def do_quit(self, sta):
+    def do_quit(self, arg):
         """Exit on quit"""
         return True
 
