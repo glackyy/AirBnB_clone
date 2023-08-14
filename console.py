@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Defines the HBNB console."""
+""" Console module for AirBnB """
 import cmd
 import re
 from shlex import split
@@ -41,6 +41,17 @@ class HBNBCommand(cmd.Cmd):
                  "City": City, "Amenity": Amenity, "Place": Place,
                  "Review": Review}
 
+    def do_EOF(self, sta):
+        """EOF Ctrl-D end of file to exit"""
+        return True
+
+    def do_quit(self, sta):
+        """Quit command to exit the program"""
+        return True
+    def emptyline(self):
+        """repeats line on receiving empty line"""
+        pass
+   
     def do_create(self, arg):
         """Create a new instance of BaseModel, save it and print the id
 
@@ -221,18 +232,6 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the count command """
         print("Count all objects of a class")
         print("[Usage]: count <className> or <className>.count()\n")
-
-    def emptyline(self):
-        """repeats line on receiving empty line"""
-        pass
-
-    def do_quit(self, sta):
-        """Quit command to exit the program"""
-        return True
-
-    def do_EOF(self, sta):
-        """EOF end of file to exit"""
-        return True
 
 
 if __name__ == '__main__':
