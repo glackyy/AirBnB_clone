@@ -22,6 +22,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """EOF Ctrl-D end of file to exit"""
+        print()
         return True
 
     def do_quit(self, line):
