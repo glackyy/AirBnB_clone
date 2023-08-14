@@ -64,11 +64,10 @@ class HBNBCommand(cmd.Cmd):
         args = spliter(arg)
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] not in self.__classes.keys():
+        elif args[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
-            obj = self.__classes[args[0]]()
-            print(obj.id)
+            print(eval(args[0])().id)
             storage.save()
 
     def help_create(self):
@@ -84,18 +83,17 @@ class HBNBCommand(cmd.Cmd):
             arg: contains the class name and id to be printed
         """
         args = spliter(arg)
+        object_d = storage.all()
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] not in self.__classes.keys():
+        elif args[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
+        elif "{}.{}".format(args[0], args[1]) not in object_d:
+            print("** no instance found **")
         else:
-            key = args[0] + "." + args[1]
-            if key not in storage.all():
-                print("** no instance found **")
-            else:
-                print(storage.all()[key])
+            print(object_d["{}.{}".format(args[0], args[1])])
 
     def help_show(self):
         """ Help information for the show command """
@@ -110,19 +108,18 @@ class HBNBCommand(cmd.Cmd):
             arg: contains the class name and id to be deleted
         """
         args = spliter(arg)
+        object_d = storage.all()
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] not in self.__classes.keys():
+        elif args[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
+        elif "{}.{}".format(args[0], args[1]) not in object_d.keys():
+            print("** no instance found **")
         else:
-            key = args[0] + "." + args[1]
-            if key not in storage.all().keys():
-                print("** no instance found **")
-            else:
-                del storage.all()[key]
-                storage.save()
+            del object_d["{}.{}".format(args[0], args[1])]
+            storage.save()
 
     def help_destroy(self):
         """ Help information for the destroy command """
