@@ -99,6 +99,10 @@ class TestFileStorage(unittest.TestCase):
         self.assertIn("City." + city.id, objs)
         self.assertIn("Amenity." + amenity.id, objs)
         self.assertIn("Review." + review.id, objs)
+    
+    def test_reload_with_arg(self):
+        with self.assertRaises(TypeError):
+            models.storage.reload(None)
 
 
 if __name__ == '__main__':
