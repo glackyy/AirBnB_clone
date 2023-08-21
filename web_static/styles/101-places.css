@@ -31,7 +31,7 @@
     flex-grow: 1;
   }
   /* ************************************************** */
-  /* article information */
+  /*                article information                 */
   /* ************************************************** */
   
   /* circle with price */
@@ -55,7 +55,7 @@
   }
   
   /* ******************************************/
-  /* information box with icons */
+  /*         information box with icons        */
   /* ******************************************/
   
   .information {
@@ -102,7 +102,7 @@
   }
   
   /*******************************************/
-  /* more information */
+  /*                more information          */
   /*******************************************/
   .places .amenities,
   .places .reviews {
@@ -132,7 +132,7 @@
     font-size: 12px;
   }
   /*******************************************/
-  /* amenities icons */
+  /*            amenities icons               */
   /*******************************************/
   .places .amenities ul li{
     display: flex;
